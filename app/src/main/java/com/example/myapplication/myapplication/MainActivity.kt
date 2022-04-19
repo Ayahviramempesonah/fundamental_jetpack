@@ -6,10 +6,7 @@ import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -85,19 +82,71 @@ fun DefaultPreview() {
 }
 
 @Composable
-fun MyApp(names: List<String> = listOf("world", "jetpack awesome", "ayah tamvan amamh cantik yang punya")) {
+fun MyApp(/*names: List<String> = listOf("world", "jetpack awesome", "ayah tamvan amamh cantik yang punya"*/) {
+   var shouldShowOnBoarding by remember { mutableStateOf(true) }
 
-    Column(modifier = Modifier.padding(vertical = 4.dp)) {
-        for (name in names) {
-            Greeting(name)
+    if (shouldShowOnBoarding){
+        OnBoardingScreen(){
+
         }
+
+        }else{
+           Greetings()
     }
+
+
+   Greetings()
+
+
+}
+@Composable
+fun  OnBoardingScreen( onContinueClicked : () -> Unit   ){
+   var shouldShowOnBoarding by remember { mutableStateOf(true) }
+
+   Surface {
+       Column (modifier = Modifier.fillMaxSize(),
+       verticalArrangement = Arrangement.Center,
+           horizontalAlignment = Alignment.CenterHorizontally
+
+           ){
+           Text("welcome to the basic codelab")
+           Button(modifier = Modifier.padding(vertical = 24.dp),
+               onClick = { shouldShowOnBoarding = false  }
+
+
+
+
+
+               ){
+           Text("continue")
+           }
+       }
+   }
 
 
 }
 
+ @Preview (showBackground = true, widthDp = 320, heightDp = 320)
+@Composable
+fun OnBoardingPreview(){
+     MyApplicationTheme{
+         OnBoardingPreview()
+     }
+ }
+
+@Composable
+private fun Greetings ( names: List<String> = listOf("world","compose")    ) {
+
+    Column(modifier =  Modifier.padding(vertical = 4.dp)){
+        for (name in names) {
+            Greetings(name = name)
+        }
+    }
 
 
+
+
+}
 
 
 
