@@ -15,6 +15,8 @@ import com.example.myapplication.myapplication.ui.theme.MyApplicationTheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,9 +25,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyApplicationTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
+
                     MyApp()
-                }
+
             }
         }
     }
@@ -77,31 +79,31 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     MyApplicationTheme {
-        MyApp()
+        Greetings()
     }
 }
 
 @Composable
-fun MyApp(/*names: List<String> = listOf("world", "jetpack awesome", "ayah tamvan amamh cantik yang punya"*/) {
-   var shouldShowOnBoarding by remember { mutableStateOf(true) }
+fun MyApp() {
+   var shouldShowOnBoarding by remember {  mutableStateOf(true) }
 
     if (shouldShowOnBoarding){
-        OnBoardingScreen(){
+        OnBoardingScreen(onContinueClicked = {shouldShowOnBoarding = false});
 
-        }
 
-        }else{
+
+
+    }else{
            Greetings()
     }
 
 
-   Greetings()
 
 
 }
 @Composable
 fun  OnBoardingScreen( onContinueClicked : () -> Unit   ){
-   var shouldShowOnBoarding by remember { mutableStateOf(true) }
+ // var shouldShowOnBoarding by remember { mutableStateOf(true) }
 
    Surface {
        Column (modifier = Modifier.fillMaxSize(),
@@ -111,7 +113,7 @@ fun  OnBoardingScreen( onContinueClicked : () -> Unit   ){
            ){
            Text("welcome to the basic codelab")
            Button(modifier = Modifier.padding(vertical = 24.dp),
-               onClick = { shouldShowOnBoarding = false  }
+               onClick = { onContinueClicked }
 
 
 
@@ -130,7 +132,7 @@ fun  OnBoardingScreen( onContinueClicked : () -> Unit   ){
 @Composable
 fun OnBoardingPreview(){
      MyApplicationTheme{
-         OnBoardingPreview()
+         OnBoardingScreen  ( onContinueClicked = {})
      }
  }
 
@@ -139,7 +141,7 @@ private fun Greetings ( names: List<String> = listOf("world","compose")    ) {
 
     Column(modifier =  Modifier.padding(vertical = 4.dp)){
         for (name in names) {
-            Greetings(name = name)
+            Greeting(name = name)
         }
     }
 
