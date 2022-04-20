@@ -113,7 +113,7 @@ fun  OnBoardingScreen( onContinueClicked : () -> Unit   ){
            ){
            Text("welcome to the basic codelab")
            Button(modifier = Modifier.padding(vertical = 24.dp),
-               onClick = { onContinueClicked }
+               onClick = onContinueClicked
 
 
 
