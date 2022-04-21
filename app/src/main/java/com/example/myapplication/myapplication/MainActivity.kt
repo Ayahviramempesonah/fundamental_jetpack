@@ -5,7 +5,9 @@ import android.view.Surface
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,6 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import java.util.Collections
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.saveable.rememberSaveable
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +43,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String) {
 
-    val expanded = remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(false) }
 
-    val extraPadding = if (expanded.value) 48.dp else 0.dp
+    val extraPadding by animateDpAsState(
+
+        if (expanded) 48.dp else 0.dp
+    )
+
+
+
 
     Surface(
         color = MaterialTheme.colors.primary,
@@ -60,11 +73,11 @@ fun Greeting(name: String) {
 
             }
             OutlinedButton(
-                onClick = { expanded.value = !expanded.value }
+                onClick = { expanded = !expanded }
 
 
             ) {
-                Text(if (expanded.value) "Show less" else "show more")
+                Text(if (expanded) "Show less" else "show more")
             }
 
         }
@@ -85,7 +98,7 @@ fun DefaultPreview() {
 
 @Composable
 fun MyApp() {
-   var shouldShowOnBoarding by remember {  mutableStateOf(true) }
+   var shouldShowOnBoarding by rememberSaveable() {  mutableStateOf(true) }
 
     if (shouldShowOnBoarding){
         OnBoardingScreen(onContinueClicked = {shouldShowOnBoarding = false});
@@ -112,7 +125,7 @@ fun  OnBoardingScreen( onContinueClicked : () -> Unit   ){
 
            ){
            Text("welcome to the basic codelab")
-           Button(modifier = Modifier.padding(vertical = 24.dp),
+           Button(modifier = Modifier.padding(vertical = 20.dp),
                onClick = onContinueClicked
 
 
@@ -137,11 +150,16 @@ fun OnBoardingPreview(){
  }
 
 @Composable
-private fun Greetings ( names: List<String> = listOf("world","compose")    ) {
+private fun Greetings ( names: List<String> = List(1000)  {"$it"}) {
 
-    Column(modifier =  Modifier.padding(vertical = 4.dp)){
-        for (name in names) {
-            Greeting(name = name)
+    LazyColumn (modifier =  Modifier.padding(vertical = 4.dp)){
+
+        items( items = names ) {
+            name ->
+            Greeting( name )
+
+
+
         }
     }
 
