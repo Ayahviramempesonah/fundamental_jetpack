@@ -5,7 +5,9 @@ import android.view.Surface
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -23,6 +25,7 @@ import java.util.Collections
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.text.font.FontWeight
 
 
 class MainActivity : ComponentActivity() {
@@ -47,7 +50,11 @@ fun Greeting(name: String) {
 
     val extraPadding by animateDpAsState(
 
-        if (expanded) 48.dp else 0.dp
+        if (expanded) 48.dp else 0.dp,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessLow
+        )
     )
 
 
@@ -65,10 +72,14 @@ fun Greeting(name: String) {
         ) {
             Column(
                 modifier =
-                Modifier.weight(1f).padding(bottom = extraPadding)
+                Modifier.weight(1f).padding(bottom = extraPadding.coerceAtLeast(0.dp))
             ) {
                 Text(text = "Hello ")
-                Text(text = name)
+                Text(text = name, style = MaterialTheme.typography.h4.copy(
+                    fontWeight = FontWeight
+                        (900)
+                )
+                )
 
 
             }
